@@ -2,6 +2,7 @@
 using ChristmasPastryShop.Models.Cocktails.Contracts;
 using ChristmasPastryShop.Models.Delicacies.Contracts;
 using ChristmasPastryShop.Repositories.Contracts;
+using ChristmasPastryShop.Utilities.Messages;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,19 +11,39 @@ namespace ChristmasPastryShop.Models.Booths
 {
     public class Booth : IBooth
     {
-        public int BoothId => throw new NotImplementedException();
+        private int boothId;
+        private int capacity;
+        private IRepository<IDelicacy> delicacyMenu;
+        private IRepository<ICocktail> cocktailMenu;
+        private double currentBill;
+        private double turnover;
+        private bool isReserved;
+        
 
-        public int Capacity => throw new NotImplementedException();
+        public int BoothId { get => boothId; private set => boothId = value; }
 
-        public IRepository<IDelicacy> DelicacyMenu => throw new NotImplementedException();
+        public int Capacity
+        {
+            get => capacity;
+            private set
+            {
+                if (value <= 0)
+                {
+                    throw new ArgumentException(ExceptionMessages.CapacityLessThanOne);
+                }
+                capacity = value;
+            }
+        }
 
-        public IRepository<ICocktail> CocktailMenu => throw new NotImplementedException();
+        public IRepository<IDelicacy> DelicacyMenu { get => delicacyMenu; private set => delicacyMenu = value; }
 
-        public double CurrentBill => throw new NotImplementedException();
+        public IRepository<ICocktail> CocktailMenu { get => cocktailMenu; private set => cocktailMenu = value; }
 
-        public double Turnover => throw new NotImplementedException();
+        public double CurrentBill { get => currentBill; private set => currentBill = value; }
 
-        public bool IsReserved => throw new NotImplementedException();
+        public double Turnover { get => turnover; private set => turnover = value; }
+
+        public bool IsReserved { get => isReserved; private set => isReserved = value; }
 
         public void ChangeStatus()
         {

@@ -13,6 +13,12 @@ namespace ChristmasPastryShop.Models.Cocktails
         private double price;
         private string[] allowedSizeValues = new string[] { "Small", "Middle", "Large" };
 
+        public Cocktail(string cocktailName, string size, double price)
+        {
+            Name = cocktailName;
+            Size = size;
+            Price = price;
+        }
         public string Name 
         {
             get => name;
@@ -50,6 +56,11 @@ namespace ChristmasPastryShop.Models.Cocktails
                     price = value / 3.0;
                 }
             }
+        }
+
+        public override string ToString()
+        {
+            return $"{Name} ({Size}) - {Price:f2} lv";
         }
     }
 }

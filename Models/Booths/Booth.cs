@@ -78,12 +78,20 @@ namespace ChristmasPastryShop.Models.Booths
 
         public void ChangeStatus()
         {
-            throw new NotImplementedException();
+            if (IsReserved)
+            {
+                isReserved = false;
+            }
+            else
+            {
+                isReserved = true;
+            }
         }
 
         public void Charge()
         {
-            throw new NotImplementedException();
+            turnover += CurrentBill;
+            currentBill = 0;
         }
 
         public void UpdateCurrentBill(double amount)

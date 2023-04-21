@@ -82,12 +82,21 @@ namespace ChristmasPastryShop.Core
 
         public string BoothReport(int boothId)
         {
-            throw new NotImplementedException();
+            IBooth booth = booths.Models.FirstOrDefault(b => b.BoothId == boothId);
+
+            return booth.ToString();
         }
 
         public string LeaveBooth(int boothId)
         {
-            throw new NotImplementedException();
+            IBooth booth = booths.Models.FirstOrDefault(b => b.BoothId == boothId);
+
+            booth.Charge();
+            booth.ChangeStatus();
+
+            return string.Format(OutputMessages.GetBill, $"{booth.Turnover:f2}") +
+                Environment.NewLine +
+                string.Format(OutputMessages.BoothIsAvailable, boothId);
         }
 
         public string ReserveBooth(int countOfPeople)

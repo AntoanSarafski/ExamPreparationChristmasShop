@@ -47,15 +47,34 @@ namespace ChristmasPastryShop.Models.Booths
             }
         }
 
-        public IRepository<IDelicacy> DelicacyMenu { get => delicacyMenu; private set => delicacyMenu = value; }
+        public IRepository<IDelicacy> DelicacyMenu
+        {
+            get => delicacyMenu;
+            private set => delicacyMenu = value; 
+        }
 
-        public IRepository<ICocktail> CocktailMenu { get => cocktailMenu; private set => cocktailMenu = value; }
 
-        public double CurrentBill { get => currentBill; private set => currentBill = value; }
+        public IRepository<ICocktail> CocktailMenu
+        {
+            get => cocktailMenu;
+            private set => cocktailMenu = value;
+        }
 
-        public double Turnover { get => turnover; private set => turnover = value; }
 
-        public bool IsReserved { get => isReserved; private set => isReserved = value; }
+        public double CurrentBill
+        { 
+            get => currentBill;
+        }
+
+        public double Turnover
+        { 
+            get => turnover; 
+        }
+
+        public bool IsReserved
+        { 
+            get => isReserved;
+        }
 
         public void ChangeStatus()
         {

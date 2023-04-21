@@ -116,7 +116,48 @@ namespace ChristmasPastryShop.Core
 
         public string TryOrder(int boothId, string order)
         {
-            throw new NotImplementedException();
+            double orderAmount = 0;
+            bool isCocktail = false;
+            string[] data = order.Split('/', StringSplitOptions.RemoveEmptyEntries);
+            string itemTypeName = data[0];
+            string itemName = data[1];
+            string size = string.Empty;
+            int countOfTheOrderedPieces = int.Parse(data[2]);
+
+            if (allowedCocktailTypes.Any(c => c == itemTypeName))
+            {
+                size = data[3];
+                isCocktail = true;
+            }
+
+            IBooth booth = booths.Models.FirstOrDefault(b => b.BoothId == boothId);
+
+            if (!allowedCocktailTypes.Any(c => c == itemTypeName) && !allowedDelicacieTypes.Any(d => d == itemTypeName))
+                return string.Format(OutputMessages.NotRecognizedType, itemTypeName);
+
+            if (!booth.CocktailMenu.Models.Any(c => c.Name == itemName) && !booth.DelicacyMenu.Models.Any(d => d.Name == itemName))
+                return string.Format(OutputMessages.NotRecognizedItemName, itemTypeName, itemName);
+
+            if (isCocktail)
+            {
+                if (!allowedCocktailTypes.Any(c => c == itemTypeName) ||
+                    !booth.CocktailMenu.Models.Any(c => c.Name == itemName && c.Size == size))
+                    return string.Format(OutputMessages.CocktailStillNotAdded, size, itemName);
+
+                orderAmount = countOfTheOrderedPieces * booth.CocktailMenu.Models.First(c => c.Name == itemName).Price;
+
+                booth.UpdateCurrentBill(orderAmount);
+                return string.Format(OutputMessages.SuccessfullyOrdered, boothId, countOfTheOrderedPieces, itemName);
+            }
+
+            if (!allowedDelicacieTypes.Any(c => c == itemTypeName) ||
+                     !booth.DelicacyMenu.Models.Any(c => c.Name == itemName))
+                return string.Format(OutputMessages.DelicacyStillNotAdded, size, itemName);
+
+            orderAmount = countOfTheOrderedPieces * booth.DelicacyMenu.Models.First(c => c.Name == itemName).Price;
+
+            booth.UpdateCurrentBill(orderAmount);
+            return string.Format(OutputMessages.SuccessfullyOrdered, boothId, countOfTheOrderedPieces, itemName);
         }
     }
 }

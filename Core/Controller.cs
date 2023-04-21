@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ChristmasPastryShop.Models.Delicacies.Contracts;
+using ChristmasPastryShop.Models.Delicacies;
 
 namespace ChristmasPastryShop.Core
 {
@@ -60,7 +62,22 @@ namespace ChristmasPastryShop.Core
 
         public string AddDelicacy(int boothId, string delicacyTypeName, string delicacyName)
         {
-            throw new NotImplementedException();
+            IBooth booth = booths.Models.FirstOrDefault(b => b.BoothId == boothId);
+            IDelicacy delicacy = null;
+
+            if (!allowedDelicacieTypes.Any(d => d == delicacyTypeName))
+                return string.Format(OutputMessages.InvalidDelicacyType, delicacyTypeName);
+
+            if (booth.DelicacyMenu.Models.Any(d => d.Name == delicacyName))
+                return string.Format(OutputMessages.DelicacyAlreadyAdded, delicacyName);
+
+            if (delicacyTypeName == "Gingerbread")
+                delicacy = new Gingerbread(delicacyName);
+            else if (delicacyTypeName == "Stolen")
+                delicacy = new Stolen(delicacyName);
+
+            booth.DelicacyMenu.AddModel(delicacy);
+            return string.Format(OutputMessages.NewDelicacyAdded, delicacyTypeName, delicacyName);
         }
 
         public string BoothReport(int boothId)

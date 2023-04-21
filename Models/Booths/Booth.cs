@@ -96,7 +96,30 @@ namespace ChristmasPastryShop.Models.Booths
 
         public void UpdateCurrentBill(double amount)
         {
-            throw new NotImplementedException();
+            currentBill += amount;
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine($"Booth: {BoothId}");
+            sb.AppendLine($"Capacity: {Capacity}");
+            sb.AppendLine($"Turnover: {Turnover:f2} lv");
+
+            sb.AppendLine($"-Cocktail menu:");
+            foreach (var cocktail in CocktailMenu.Models)
+            {
+                sb.AppendLine($"--{cocktail}");
+            }
+
+            sb.AppendLine($"-Delicacy menu:");
+            foreach (var delicacy in DelicacyMenu.Models)
+            {
+                sb.AppendLine($"--{delicacy}");
+            }
+
+            return sb.ToString().Trim();
         }
     }
 }

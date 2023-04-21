@@ -101,7 +101,17 @@ namespace ChristmasPastryShop.Core
 
         public string ReserveBooth(int countOfPeople)
         {
-            throw new NotImplementedException();
+            IBooth booth = booths.Models
+               .Where(b => b.IsReserved == false && b.Capacity >= countOfPeople)
+               .OrderBy(b => b.Capacity)
+               .ThenByDescending(b => b.BoothId)
+               .FirstOrDefault();
+
+            if (booth == null)
+                return string.Format(OutputMessages.NoAvailableBooth, countOfPeople);
+
+            booth.ChangeStatus();
+            return string.Format(OutputMessages.BoothReservedSuccessfully, booth.BoothId, countOfPeople);
         }
 
         public string TryOrder(int boothId, string order)

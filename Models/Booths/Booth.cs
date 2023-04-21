@@ -1,6 +1,7 @@
 ﻿using ChristmasPastryShop.Models.Booths.Contracts;
 using ChristmasPastryShop.Models.Cocktails.Contracts;
 using ChristmasPastryShop.Models.Delicacies.Contracts;
+using ChristmasPastryShop.Repositories;
 using ChristmasPastryShop.Repositories.Contracts;
 using ChristmasPastryShop.Utilities.Messages;
 using System;
@@ -18,9 +19,20 @@ namespace ChristmasPastryShop.Models.Booths
         private double currentBill;
         private double turnover;
         private bool isReserved;
-        
 
-        public int BoothId { get => boothId; private set => boothId = value; }
+        public Booth(int boothId, int capacity)
+        {
+            BoothId = boothId;
+            Capacity = capacity;
+            CocktailMenu = new CocktailRepository();
+            DelicacyMenu = new DelicacyRepository();
+        }
+
+        public int BoothId 
+        { 
+            get => boothId;
+            private set => boothId = value;
+        }
 
         public int Capacity
         {
